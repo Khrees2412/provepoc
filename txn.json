@@ -1,0 +1,326 @@
+[
+    {
+        "id": "66141bbff58d2687e7d91234",
+        "narration": "PG00001",
+        "amount": 500,
+        "type": "debit",
+        "balance": 1500,
+        "date": "2023-12-14T00:02:00.500Z",
+        "category": "unknown"
+    },
+    {
+        "id": "66141bbff58d2687e7d91235",
+        "narration": "0000132312091322123456789012345 NIP TRANSFER",
+        "amount": 1000,
+        "type": "debit",
+        "balance": 2000,
+        "date": "2023-12-09T13:23:00.100Z",
+        "category": "bank_charges"
+    },
+    {
+        "id": "a1b2c3d4e5f6789012345678",
+        "narration": "Salary Deposit",
+        "amount": 5000,
+        "type": "credit",
+        "balance": 7000,
+        "date": "2023-12-18T09:15:30.200Z",
+        "category": "salary"
+    },
+    {
+        "id": "f8e7d6c5b4a3210987654321",
+        "narration": "POS Purchase - Shoprite",
+        "amount": 750,
+        "type": "debit",
+        "balance": 6250,
+        "date": "2023-12-22T14:40:00.000Z",
+        "category": "groceries"
+    },
+    {
+        "id": "901234567890abcdef12345678",
+        "narration": "Mobile Recharge - Airtel",
+        "amount": 200,
+        "type": "debit",
+        "balance": 6050,
+        "date": "2023-12-25T18:05:15.150Z",
+        "category": "utilities"
+    },
+    {
+        "id": "bcdefa0123456789abcdef0123",
+        "narration": "Transfer Received - Friend",
+        "amount": 1200,
+        "type": "credit",
+        "balance": 7250,
+        "date": "2023-12-29T11:30:00.000Z",
+        "category": "transfer"
+    },
+    {
+        "id": "4567890abcdef1234567890abc",
+        "narration": "ATM Withdrawal - Ikeja",
+        "amount": 3000,
+        "type": "debit",
+        "balance": 4250,
+        "date": "2024-01-03T16:20:45.250Z",
+        "category": "withdrawal"
+    },
+    {
+        "id": "defabc1234567890abcdef1234",
+        "narration": "DSTV Subscription",
+        "amount": 2500,
+        "type": "debit",
+        "balance": 1750,
+        "date": "2024-01-07T20:00:00.000Z",
+        "category": "entertainment"
+    },
+    {
+        "id": "567890abcdef1234567890abcd",
+        "narration": "Interest Earned",
+        "amount": 50,
+        "type": "credit",
+        "balance": 1800,
+        "date": "2024-01-12T05:00:00.000Z",
+        "category": "interest"
+    },
+    {
+        "id": "efabcd0123456789abcdef01234",
+        "narration": "Online Purchase - Jumia",
+        "amount": 1500,
+        "type": "debit",
+        "balance": 300,
+        "date": "2024-01-15T12:55:30.000Z",
+        "category": "shopping"
+    },
+    {
+        "id": "67890abcdef1234567890abcde",
+        "narration": "Fuel Purchase - Total",
+        "amount": 2200,
+        "type": "debit",
+        "balance": -1900,
+        "date": "2024-01-19T08:30:00.000Z",
+        "category": "transport"
+    },
+    {
+        "id": "fabcde0123456789abcdef012345",
+        "narration": "Loan Repayment",
+        "amount": 1000,
+        "type": "debit",
+        "balance": -2900,
+        "date": "2024-01-23T17:10:10.000Z",
+        "category": "loan"
+    },
+    {
+        "id": "7890abcdef1234567890abcdef",
+        "narration": "Transfer to Savings",
+        "amount": 800,
+        "type": "debit",
+        "balance": -3700,
+        "date": "2024-01-27T21:45:00.000Z",
+        "category": "transfer"
+    },
+    {
+        "id": "bcdefa1234567890abcdef123456",
+        "narration": "Refund - Online Store",
+        "amount": 350,
+        "type": "credit",
+        "balance": -3350,
+        "date": "2024-01-31T10:20:00.000Z",
+        "category": "refund"
+    },
+    {
+        "id": "890abcdef1234567890abcdef0",
+        "narration": "Restaurant Bill - Chicken Republic",
+        "amount": 1800,
+        "type": "debit",
+        "balance": -5150,
+        "date": "2024-02-04T13:00:00.000Z",
+        "category": "food"
+    },
+    {
+        "id": "cdefab234567890abcdef1234567",
+        "narration": "School Fees Payment",
+        "amount": 4000,
+        "type": "debit",
+        "balance": -9150,
+        "date": "2024-02-08T09:50:55.000Z",
+        "category": "education"
+    },
+    {
+        "id": "90abcdef1234567890abcdef01",
+        "narration": "Medical Consultation",
+        "amount": 1250,
+        "type": "debit",
+        "balance": -10400,
+        "date": "2024-02-12T15:35:00.000Z",
+        "category": "health"
+    },
+    {
+        "id": "defabc34567890abcdef12345678",
+        "narration": "Electricity Bill Payment",
+        "amount": 900,
+        "type": "debit",
+        "balance": -11300,
+        "date": "2024-02-16T19:20:05.000Z",
+        "category": "utilities"
+    },
+    {
+        "id": "0abcdef1234567890abcdef012",
+        "narration": "Gift Received",
+        "amount": 600,
+        "type": "credit",
+        "balance": -10700,
+        "date": "2024-02-20T11:05:00.000Z",
+        "category": "gift"
+    },
+    {
+        "id": "efabcd4567890abcdef123456789",
+        "narration": "Flight Booking",
+        "amount": 7500,
+        "type": "debit",
+        "balance": -18200,
+        "date": "2024-02-24T07:45:30.000Z",
+        "category": "travel"
+    },
+    {
+        "id": "1abcdef234567890abcdef01234",
+        "narration": "Subscription - Netflix",
+        "amount": 1100,
+        "type": "debit",
+        "balance": -19300,
+        "date": "2024-02-28T22:15:00.000Z",
+        "category": "entertainment"
+    },
+    {
+        "id": "fabcde567890abcdef1234567890",
+        "narration": "Dividend Received",
+        "amount": 2000,
+        "type": "credit",
+        "balance": -17300,
+        "date": "2024-03-03T14:00:00.000Z",
+        "category": "investment"
+    },
+    {
+        "id": "2abcdef34567890abcdef012345",
+        "narration": "Car Maintenance",
+        "amount": 3200,
+        "type": "debit",
+        "balance": -20500,
+        "date": "2024-03-07T10:30:45.000Z",
+        "category": "transport"
+    },
+    {
+        "id": "bcdefa67890abcdef1234567890a",
+        "narration": "Grocery Shopping - Spar",
+        "amount": 2800,
+        "type": "debit",
+        "balance": -23300,
+        "date": "2024-03-11T16:55:00.000Z",
+        "category": "groceries"
+    },
+    {
+        "id": "3abcdef4567890abcdef0123456",
+        "narration": "Internet Subscription",
+        "amount": 1500,
+        "type": "debit",
+        "balance": -24800,
+        "date": "2024-03-15T20:10:20.000Z",
+        "category": "utilities"
+    },
+    {
+        "id": "cdefab7890abcdef1234567890ab",
+        "narration": "Bonus Received",
+        "amount": 4500,
+        "type": "credit",
+        "balance": -20300,
+        "date": "2024-03-19T09:40:00.000Z",
+        "category": "salary"
+    },
+    {
+        "id": "4abcdef567890abcdef01234567",
+        "narration": "Rent Payment",
+        "amount": 15000,
+        "type": "debit",
+        "balance": -35300,
+        "date": "2024-03-23T13:25:15.000Z",
+        "category": "housing"
+    },
+    {
+        "id": "defabc890abcdef1234567890abcde",
+        "narration": "Pharmacy Purchase",
+        "amount": 650,
+        "type": "debit",
+        "balance": -35950,
+        "date": "2024-03-27T17:00:00.000Z",
+        "category": "health"
+    },
+    {
+        "id": "5abcdef67890abcdef012345678",
+        "narration": "Transfer Received - Family",
+        "amount": 900,
+        "type": "credit",
+        "balance": -35050,
+        "date": "2024-03-31T11:45:30.000Z",
+        "category": "transfer"
+    },
+    {
+        "id": "efabcd90abcdef1234567890abcd",
+        "narration": "Dry Cleaning",
+        "amount": 400,
+        "type": "debit",
+        "balance": -35450,
+        "date": "2024-04-04T14:30:00.000Z",
+        "category": "personal"
+    },
+    {
+        "id": "6abcdef7890abcdef0123456789",
+        "narration": "Transfer to Investment",
+        "amount": 2000,
+        "type": "debit",
+        "balance": -37450,
+        "date": "2024-04-08T18:15:25.000Z",
+        "category": "investment"
+    },
+    {
+        "id": "fabcde0abcdef1234567890abcde0",
+        "narration": "Transfer from Savings",
+        "amount": 1500,
+        "type": "credit",
+        "balance": -35950,
+        "date": "2024-04-12T10:00:00.000Z",
+        "category": "transfer"
+    },
+    {
+        "id": "7abcdef1890abcdef0123456789a",
+        "narration": "Haircut",
+        "amount": 700,
+        "type": "debit",
+        "balance": -36650,
+        "date": "2024-04-15T12:40:00.000Z",
+        "category": "personal"
+    },
+    {
+        "id": "bcdefa2abcdef1234567890abcdef1",
+        "narration": "Transfer to Mother",
+        "amount": 1000,
+        "type": "debit",
+        "balance": -37650,
+        "date": "2023-12-16T08:55:00.000Z",
+        "category": "family"
+    },
+    {
+        "id": "8abcdef290abcdef0123456789ab",
+        "narration": "Transfer from Father",
+        "amount": 2500,
+        "type": "credit",
+        "balance": -35150,
+        "date": "2023-12-20T15:20:30.000Z",
+        "category": "family"
+    },
+    {
+        "id": "cdefab3abcdef1234567890abcdef2",
+        "narration": "Book Purchase",
+        "amount": 350,
+        "type": "debit",
+        "balance": -35500,
+        "date": "2023-12-24T19:05,00.000Z",
+        "category": "education"
+    }
+]
