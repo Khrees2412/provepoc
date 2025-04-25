@@ -3,7 +3,7 @@
     "module": "index.ts",
     "type": "module",
     "scripts": {
-        "start": "bun run index.ts"
+        "start": "bun --watch index.ts"
     },
     "devDependencies": {
         "@types/bun": "latest",
@@ -13,7 +13,11 @@
         "typescript": "^5.0.0"
     },
     "dependencies": {
+        "@types/cors": "^2.8.17",
+        "cors": "^2.8.5",
+        "dotenv": "^16.5.0",
         "express": "^5.1.0",
-        "nanoid": "^5.1.5"
+        "nanoid": "^5.1.5",
+        "zod": "^3.24.3"
     }
 }
