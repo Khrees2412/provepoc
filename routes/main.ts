@@ -1,8 +1,8 @@
 import express, { type Router, type Request, type Response } from "express";
-import { nanoid } from "nanoid";
 import { db, insertVerification } from "../db.ts";
 import { z } from "zod";
 import { initiateProve } from "../services/index.ts";
+import { type VerificationResponse } from "../types.ts";
 
 const router: Router = express.Router();
 
@@ -20,6 +20,7 @@ const requestBodySchema = z.object({
     }),
     loan_amount: z.number().min(1000),
     monthly_income: z.number(),
+    redirect_url: z.string(),
 });
 
 router.post("/verify", async (req: Request, res: Response) => {
@@ -32,22 +33,20 @@ router.post("/verify", async (req: Request, res: Response) => {
         });
         return;
     }
-    const { kyc_level, bank_accounts, customer, loan_amount } =
+    const { kyc_level, bank_accounts, customer, loan_amount, redirect_url } =
         parseResult.data;
-
-    const id = nanoid(12);
-    const reference = `loan-request-${id}`;
 
     try {
         const data = await initiateProve({
             kyc_level,
             bank_accounts,
             customer,
+            redirect_url,
         });
 
-        if (data.status === "success") {
+        if (data.status === "successful") {
             insertVerification({
-                id: reference,
+                id: data.data.reference,
                 full_name: customer.name,
                 id_type: customer.identity.type,
                 id_value: customer.identity.number,
@@ -66,7 +65,10 @@ router.post("/verify", async (req: Request, res: Response) => {
         res.json({
             success: true,
             message: "Verification initiated successfully",
-            reference,
+            data: {
+                reference: data.data.reference,
+                mono_url: data.data.mono_url,
+            },
         });
     } catch (error) {
         console.error(error);
@@ -75,24 +77,6 @@ router.post("/verify", async (req: Request, res: Response) => {
         });
     }
 });
-
-interface VerificationResponse {
-    id: string;
-    full_name: string;
-    id_type: string;
-    id_value: string;
-    email: string;
-    loan_amount: number;
-    status: string;
-    mono_reference: string;
-    kyc_level: string;
-    is_blacklisted: boolean;
-    bank_accounts: boolean;
-    customer_id: string;
-    raw_response: string;
-    created_at: string;
-    updated_at: string;
-}
 
 router.get("/status/:reference", (req: Request, res: Response) => {
     const { reference } = req.params;
@@ -107,21 +91,21 @@ router.get("/status/:reference", (req: Request, res: Response) => {
         res.json({
             success: true,
             message: "Verification status fetched successfully",
-            verification,
-            loanDecision: `Your application for a loan of ${turnKoboToNaira(
-                verification.loan_amount
-            )} naira has been ${simulateLoanDecision(
-                verification.kyc_level,
-                verification.loan_amount
-            )} `,
+            data: {
+                verification,
+                loanDecision: `Your application for a loan of ${turnKoboToNaira(
+                    verification.loan_amount
+                )} naira has been ${simulateLoanDecision(
+                    verification.kyc_level,
+                    verification.loan_amount
+                )} `,
+            },
         });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Failed to fetch verification status" });
     }
 });
-
-export default router;
 
 const turnKoboToNaira = (amount: number): number => amount / 100;
 type Decision = "Approved" | "Rejected";
@@ -146,3 +130,5 @@ const simulateLoanDecision = (
 
     return amountInNaira < tierLimit ? "Approved" : "Rejected";
 };
+
+export default router;

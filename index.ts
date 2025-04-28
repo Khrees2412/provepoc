@@ -3,13 +3,13 @@ import express, {
     type Request,
     type Response,
 } from "express";
-
 import cors from "cors";
 import dotenv from "dotenv";
 
+import router from "./routes/index.ts";
 dotenv.config();
 
-import router from "./routes/index.ts";
+export const MONO_SEC_KEY = process.env.MONO_PROVE_PROD_SEC_KEY!;
 
 const app: Application = express();
 const PORT = process.env.PORT || 3003;

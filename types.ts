@@ -61,3 +61,55 @@ export interface DataAccess {
 export interface Meta {
     ref: string;
 }
+
+export interface VerificationResponse {
+    id: string;
+    full_name: string;
+    id_type: string;
+    id_value: string;
+    email: string;
+    loan_amount: number;
+    status: string;
+    mono_reference: string;
+    kyc_level: string;
+    is_blacklisted: boolean;
+    bank_accounts: boolean;
+    customer_id: string;
+    raw_response: string;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface RequestBody {
+    kyc_level: "tier_1" | "tier_2" | "tier_3";
+    bank_accounts: boolean;
+    customer: {
+        name: string;
+        email: string;
+        address: string;
+        identity: {
+            type: string;
+            number: string;
+        };
+    };
+    loan_amount?: number;
+    redirect_url?: string;
+}
+
+export interface InitiateResponseData {
+    status: string;
+    message: string;
+    timestamp: Date;
+    data: InitiateData;
+}
+
+export interface InitiateData {
+    id: string;
+    customer: string;
+    mono_url: string;
+    reference: string;
+    redirect_url: string;
+    bank_accounts: boolean;
+    kyc_level?: string;
+    is_blacklisted: boolean;
+}
