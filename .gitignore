@@ -187,3 +187,6 @@ dist
 *.sqlite3
 *.db-journal
 *.sqlite-journal
+
+
+.venv

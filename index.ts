@@ -9,7 +9,7 @@ import dotenv from "dotenv";
 import router from "./routes/index.ts";
 dotenv.config();
 
-export const MONO_SEC_KEY = process.env.MONO_PROVE_PROD_SEC_KEY!;
+export const MONO_SEC_KEY = process.env.MONO_PROVE_PROD_SEC_KEY as string;
 
 const app: Application = express();
 const PORT = process.env.PORT || 3003;
@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use("/v1", router);
 
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (_: Request, res: Response) => {
     res.json({ message: "Hello World!" });
 });
 

@@ -21,9 +21,10 @@ const validateWebhookSignature = (req: Request, secret: string): boolean => {
 };
 
 router.post("/webhooks/mono", async (req: Request, res: Response) => {
-    // if (!validateWebhookSignature(req, MONO_SEC_KEY)) {
-    //     res.status(401).send("Invalid signature");
-    // }
+    if (!validateWebhookSignature(req, MONO_SEC_KEY)) {
+        res.status(401).send("Invalid signature");
+        return;
+    }
 
     const { event, data } = req.body;
     try {
