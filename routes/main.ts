@@ -1,7 +1,12 @@
 import express, { type Router, type Request, type Response } from "express";
 import { db, insertVerification } from "../db.ts";
 import { z } from "zod";
-import { initiateProve } from "../services/index.ts";
+import {
+    getCustomer,
+    initiateProve,
+    revokeDataAccess,
+    whitelistOrBlacklistCustomer,
+} from "../services/index.ts";
 import { type VerificationResponse } from "../types.ts";
 
 const router: Router = express.Router();
@@ -82,17 +87,32 @@ router.get("/status/:reference", (req: Request, res: Response) => {
     const { reference } = req.params;
 
     try {
-        const query = db.query(`
-            SELECT * FROM verifications WHERE mono_reference = '${reference}'
+        const query = db.prepare(`
+            SELECT * FROM verifications 
+            WHERE mono_reference = ?
         `);
 
-        const verification = query.get() as VerificationResponse;
+        const verification = query.get(reference) as VerificationResponse;
+
+        if (!verification) {
+            res.status(404).json({
+                success: false,
+                message: "Verification not found",
+            });
+            return;
+        }
+        if (verification.status !== "verified") {
+            res.status(400).json({
+                success: false,
+                message: "Verification not completed or expired",
+            });
+            return;
+        }
 
         res.json({
             success: true,
-            message: "Verification status fetched successfully",
+            message: "Loan status fetched successfully",
             data: {
-                verification,
                 loanDecision: `Your application for a loan of ${turnKoboToNaira(
                     verification.loan_amount
                 )} naira has been ${simulateLoanDecision(
@@ -130,5 +150,102 @@ const simulateLoanDecision = (
 
     return amountInNaira < tierLimit ? "Approved" : "Rejected";
 };
+
+router.get("/customers/:reference", async (req: Request, res: Response) => {
+    const { reference } = req.params;
+
+    try {
+        const data = await getCustomer(reference);
+
+        if (data.status === "failed") {
+            res.status(400).json({
+                success: false,
+                message: data.message,
+                timestamp: data.timestamp,
+            });
+            return;
+        }
+
+        res.json({
+            success: true,
+            message: data.message,
+            timestamp: data.timestamp,
+            data: data.data,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            status: "failed",
+            message: "Failed to fetch customer details",
+            timestamp: new Date().toISOString(),
+        });
+    }
+});
+
+router.delete("/customers/:reference", async (req: Request, res: Response) => {
+    const { reference } = req.params;
+
+    try {
+        const data = await revokeDataAccess(reference);
+
+        if (data.status === "failed") {
+            res.status(400).json({
+                success: false,
+                message: data.message,
+                timestamp: data.timestamp,
+            });
+            return;
+        }
+
+        res.json({
+            success: true,
+            message: data.message,
+            timestamp: data.timestamp,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to revoke customer data access",
+            timestamp: new Date().toISOString(),
+        });
+    }
+});
+
+router.patch("/customers/:reference", async (req: Request, res: Response) => {
+    const { reference } = req.params;
+    const { action, reason, code } = req.body;
+
+    try {
+        const data = await whitelistOrBlacklistCustomer(
+            action,
+            reference,
+            reason,
+            code
+        );
+
+        if (data.status === "failed") {
+            res.status(400).json({
+                success: false,
+                message: data.message,
+                timestamp: data.timestamp,
+            });
+            return;
+        }
+
+        res.json({
+            success: true,
+            message: data.message,
+            timestamp: data.timestamp,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to update customer profile",
+            timestamp: new Date().toISOString(),
+        });
+    }
+});
 
 export default router;

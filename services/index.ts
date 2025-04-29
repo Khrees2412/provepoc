@@ -1,5 +1,10 @@
 import { nanoid } from "nanoid";
-import { type RequestBody, type InitiateResponseData } from "../types";
+import {
+    type RequestBody,
+    type InitiateResponseData,
+    type CustomerDetailsResponse,
+    type GenericResponse,
+} from "../types";
 import { MONO_SEC_KEY } from "../index";
 
 const BASE_URL = "https://api.withmono.com/v1/prove";
@@ -43,7 +48,9 @@ export const initiateProve = async (
 
 export const whitelistOrBlacklistCustomer = async (
     action: boolean,
-    reference: string
+    reference: string,
+    reason?: string,
+    code?: string
 ) => {
     let t = "whitelist";
     if (action) {
@@ -51,12 +58,23 @@ export const whitelistOrBlacklistCustomer = async (
     }
     const url = `${BASE_URL}/customers/${t}`;
 
+    let body;
+    if (action && reason && code) {
+        body = {
+            reference,
+            reason,
+            code,
+        };
+    } else {
+        body = {
+            reference,
+        };
+    }
+
     try {
         const response = await fetch(url, {
             method: "POST",
-            body: JSON.stringify({
-                reference,
-            }),
+            body: JSON.stringify(body),
             headers: {
                 "Content-Type": "application/json",
                 "mono-sec-key": MONO_SEC_KEY,
@@ -69,7 +87,7 @@ export const whitelistOrBlacklistCustomer = async (
             throw new Error(res.message || `Failed to ${t} customer`);
         }
 
-        return res;
+        return res as GenericResponse;
     } catch (error) {
         if (error instanceof Error) {
             throw error;
@@ -98,7 +116,7 @@ export const revokeDataAccess = async (
             throw new Error(res.message || "Failed to revoke data access");
         }
 
-        return res;
+        return res as GenericResponse;
     } catch (error) {
         if (error instanceof Error) {
             throw error;
@@ -120,12 +138,13 @@ export const getCustomer = async (reference: string): Promise<any | Error> => {
         });
 
         const res = await response.json();
+        console.log(res);
 
         if (!response.ok) {
             throw new Error(res.message || "Failed to get customer");
         }
 
-        return res;
+        return res as CustomerDetailsResponse;
     } catch (error) {
         if (error instanceof Error) {
             throw error;

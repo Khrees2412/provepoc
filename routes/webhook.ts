@@ -1,31 +1,38 @@
 import express, { type Router, type Request, type Response } from "express";
-import crypto from "crypto";
 import { db } from "../db.ts";
 import type {
     VerificationInitiated,
     VerificationCancelled,
     VerificationExpired,
 } from "../types.ts";
-import { MONO_SEC_KEY } from "../index.ts";
 
-const router: Router = express.Router();
+const getWebhookSecret = (): string => {
+    const environment = process.env.NODE_ENV || "development";
+    const secret =
+        environment === "production"
+            ? process.env.MONO_PROVE_PROD_WEBHOOK_SECRET
+            : process.env.MONO_PROVE_DEV_WEBHOOK_SECRET;
 
-const validateWebhookSignature = (req: Request, secret: string): boolean => {
-    const signature = req.headers["x-mono-signature"] as string;
-    const payload = JSON.stringify(req.body);
-    const hash = crypto
-        .createHmac("sha256", secret)
-        .update(payload)
-        .digest("hex");
-    return signature === hash;
-};
-
-router.post("/webhooks/mono", async (req: Request, res: Response) => {
-    if (!validateWebhookSignature(req, MONO_SEC_KEY)) {
-        res.status(401).send("Invalid signature");
-        return;
+    if (!secret) {
+        throw new Error(
+            `Webhook secret not found for ${environment} environment`
+        );
     }
 
+    return secret;
+};
+
+const webhookSecret = getWebhookSecret();
+const router: Router = express.Router();
+
+router.post("/webhooks/mono", async (req: Request, res: Response) => {
+    const webhookHeaderSecret = req.headers["mono-webhook-secret"] as string;
+
+    if (webhookHeaderSecret !== webhookSecret) {
+        res.status(401).send("Invalid signature");
+        console.error("Invalid signature");
+        return;
+    }
     const { event, data } = req.body;
     try {
         switch (event) {
@@ -37,37 +44,48 @@ router.post("/webhooks/mono", async (req: Request, res: Response) => {
             case "mono.prove.data_verification_successful":
                 const successful = data as unknown as VerificationInitiated;
                 console.log("verification successful: ", successful);
-                db.exec(`
+                const successStmt = db.prepare(`
                     UPDATE verifications
-                    SET status = 'verified', raw_response = '${JSON.stringify(
-                        successful
-                    )}'
-                    WHERE mono_reference = '${successful.reference}';
+                    SET status = ?, raw_response = ?
+                    WHERE mono_reference = ?;
                 `);
-
+                successStmt.run(
+                    "verified",
+                    JSON.stringify(successful),
+                    successful.reference
+                );
                 break;
+
             case "mono.prove.data_verification_cancelled":
                 const cancelled = data as unknown as VerificationCancelled;
                 console.log("verification cancelled: ", cancelled);
-                db.exec(`
+                const cancelStmt = db.prepare(`
                     UPDATE verifications
-                    SET status = 'cancelled', raw_response = '${JSON.stringify(
-                        cancelled
-                    )}'
-                    WHERE mono_reference = '${cancelled.reference}';
+                    SET status = ?, raw_response = ?
+                    WHERE mono_reference = ?;
                 `);
+                cancelStmt.run(
+                    "cancelled",
+                    JSON.stringify(cancelled),
+                    cancelled.reference
+                );
                 break;
+
             case "mono.prove.data_verification_expired":
                 const expired = data as unknown as VerificationExpired;
                 console.log("verification expired", expired);
-                db.exec(`
+                const expireStmt = db.prepare(`
                     UPDATE verifications
-                    SET status = 'expired', raw_response = '${JSON.stringify(
-                        expired
-                    )}'
-                    WHERE mono_reference = '${expired.reference}';
+                    SET status = ?, raw_response = ?
+                    WHERE mono_reference = ?;
                 `);
+                expireStmt.run(
+                    "expired",
+                    JSON.stringify(expired),
+                    expired.reference
+                );
                 break;
+
             default:
                 console.log("Unknown event type:", req.body);
                 res.status(400).send("Unknown event");

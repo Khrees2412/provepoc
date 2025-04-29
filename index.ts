@@ -12,7 +12,7 @@ dotenv.config();
 export const MONO_SEC_KEY = process.env.MONO_PROVE_PROD_SEC_KEY as string;
 
 const app: Application = express();
-const PORT = process.env.PORT || 3003;
+const PORT = process.env.PORT;
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));

@@ -113,3 +113,77 @@ export interface InitiateData {
     kyc_level?: string;
     is_blacklisted: boolean;
 }
+
+interface NextOfKin {
+    name: string;
+    email: string;
+    phoneNumber: string;
+    relationship: string;
+    address: string;
+}
+
+interface PersonalInfo {
+    first_name: string;
+    middle_name: string | null;
+    last_name: string;
+    next_of_kin: NextOfKin;
+    email_addresses: string[];
+    phone_numbers: string[];
+    alternate_phone_number: string | null;
+    date_of_birth: string;
+    gender: "m" | "f" | "other";
+    state_of_origin: string | null;
+    state_of_residence: string | null;
+    lga_of_origin: string | null;
+    lga_of_residence: string | null;
+    city: string | null;
+    nationality: string;
+    marital_status: "SINGLE" | "MARRIED" | "DIVORCED" | "WIDOWED";
+    address_line_1: string | null;
+    address_line_2: string | null;
+}
+
+interface CustomerDataAccess {
+    last_access_date: string | null;
+    start_date: string | null;
+    end_date: string | null;
+    type: "permanent" | "temporary";
+}
+
+interface Identity {
+    id: string;
+    number: string;
+}
+
+interface Institution {
+    name: string;
+    bank_code: string;
+    nip_code: string;
+}
+
+interface Account {
+    name: string;
+    account_number: string;
+    access_type: ("view" | "transfer" | "deposit")[];
+    institution: Institution;
+}
+
+interface CustomerData {
+    id: string;
+    status: "active" | "inactive" | "pending";
+    reference: string;
+    data_access: CustomerDataAccess;
+    personal_info: PersonalInfo;
+    identities: Identity[];
+    accounts: Account[];
+}
+
+export interface GenericResponse {
+    status: "successful" | "failed";
+    message: string;
+    timestamp: string;
+}
+
+export type CustomerDetailsResponse = GenericResponse & {
+    data: CustomerData;
+};
