@@ -1,4 +1,4 @@
-# Mono Prove API Integration
+# Mono Prove POC
 
 A TypeScript Express API for integrating with Mono's Prove service for identity verification.
 
@@ -18,8 +18,9 @@ MONO_PROVE_PROD_SEC_KEY=your_production_key
 MONO_PROVE_TEST_SEC_KEY=your_test_key
 MONO_PROVE_DEV_WEBHOOK_SECRET=your_dev_webhook_secret
 MONO_PROVE_PROD_WEBHOOK_SECRET=your_prod_webhook_secret
-PORT=3005
 ```
+
+| Remember to add a webhook URL to your Mono account for the development (ngrok or similar) and production environment.
 
 4. Start the server:
 
@@ -104,9 +105,9 @@ bun start    # For production
 
 ```json
 {
-  "action": boolean,
-  "reason": string,
-  "code": string
+  "action": boolean, // true is to blacklist, false is to whitelist
+  "reason": string, // only needed if action is true
+  "code": string // only needed if action is true
 }
 ```
 
