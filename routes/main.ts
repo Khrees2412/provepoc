@@ -175,8 +175,8 @@ router.get("/customers/:reference", async (req: Request, res: Response) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({
-            status: "failed",
-            message: "Failed to fetch customer details",
+            success: false,
+            message: `Failed to fetch customer details, error: ${error}`,
             timestamp: new Date().toISOString(),
         });
     }
@@ -206,7 +206,7 @@ router.delete("/customers/:reference", async (req: Request, res: Response) => {
         console.error(error);
         res.status(500).json({
             success: false,
-            message: "Failed to revoke customer data access",
+            message: `Failed to revoke customer data access, error: ${error}`,
             timestamp: new Date().toISOString(),
         });
     }
@@ -242,7 +242,7 @@ router.patch("/customers/:reference", async (req: Request, res: Response) => {
         console.error(error);
         res.status(500).json({
             success: false,
-            message: "Failed to update customer profile",
+            message: `Failed to update customer profile, error: ${error}`,
             timestamp: new Date().toISOString(),
         });
     }
