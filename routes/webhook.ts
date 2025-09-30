@@ -34,69 +34,8 @@ router.post("/webhooks/mono", async (req: Request, res: Response) => {
         return;
     }
     const { event, data } = req.body;
-    try {
-        switch (event) {
-            case "mono.prove.data_verification_initiated":
-                const initiated = data as unknown as VerificationInitiated;
-                console.log("verification initiated: ", initiated);
-                break;
+    console.log("body: ", req.body);
 
-            case "mono.prove.data_verification_successful":
-                const successful = data as unknown as VerificationInitiated;
-                console.log("verification successful: ", successful);
-                const successStmt = db.prepare(`
-                    UPDATE verifications
-                    SET status = ?, raw_response = ?
-                    WHERE mono_reference = ?;
-                `);
-                successStmt.run(
-                    "verified",
-                    JSON.stringify(successful),
-                    successful.reference
-                );
-                break;
-
-            case "mono.prove.data_verification_cancelled":
-                const cancelled = data as unknown as VerificationCancelled;
-                console.log("verification cancelled: ", cancelled);
-                const cancelStmt = db.prepare(`
-                    UPDATE verifications
-                    SET status = ?, raw_response = ?
-                    WHERE mono_reference = ?;
-                `);
-                cancelStmt.run(
-                    "cancelled",
-                    JSON.stringify(cancelled),
-                    cancelled.reference
-                );
-                break;
-
-            case "mono.prove.data_verification_expired":
-                const expired = data as unknown as VerificationExpired;
-                console.log("verification expired", expired);
-                const expireStmt = db.prepare(`
-                    UPDATE verifications
-                    SET status = ?, raw_response = ?
-                    WHERE mono_reference = ?;
-                `);
-                expireStmt.run(
-                    "expired",
-                    JSON.stringify(expired),
-                    expired.reference
-                );
-                break;
-
-            default:
-                console.log("Unknown event type:", req.body);
-                res.status(400).send("Unknown event");
-                return;
-        }
-        res.status(200).send("Webhook processed");
-    } catch (error) {
-        console.error(error);
-        res.status(500).send("Failed to process webhook");
-        return;
-    }
+    res.status(200).send("Webhook processed");
 });
-
 export default router;

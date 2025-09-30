@@ -16,6 +16,7 @@ const requestBodySchema = z.object({
     bank_accounts: z.boolean(),
     customer: z.object({
         name: z.string(),
+        phone: z.string(),
         email: z.string().email(),
         address: z.string(),
         identity: z.object({

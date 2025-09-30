@@ -8,6 +8,7 @@ import {
 import { MONO_SEC_KEY } from "../index";
 
 const BASE_URL = "https://api.withmono.com/v1/prove";
+const REDIRECT_URL = process.env.REDIRECT_URL;
 
 export const initiateProve = async (
     data: RequestBody
@@ -20,7 +21,7 @@ export const initiateProve = async (
             method: "POST",
             body: JSON.stringify({
                 reference: `loan-request-${id}`,
-                redirect_url: data.redirect_url || "http://localhost:5500",
+                redirect_url: data.redirect_url || REDIRECT_URL,
                 kyc_level: data.kyc_level,
                 bank_accounts: data.bank_accounts,
                 customer: data.customer,
@@ -138,7 +139,6 @@ export const getCustomer = async (reference: string): Promise<any | Error> => {
         });
 
         const res = await response.json();
-        console.log(res);
 
         if (!response.ok) {
             throw new Error(res.message || "Failed to get customer");

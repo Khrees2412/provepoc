@@ -85,9 +85,10 @@ export interface RequestBody {
     bank_accounts: boolean;
     customer: {
         name: string;
+        phone: string;
         email: string;
         address: string;
-        identity: {
+        identity?: {
             type: string;
             number: string;
         };
