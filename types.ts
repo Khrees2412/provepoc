@@ -86,8 +86,8 @@ export interface RequestBody {
     customer: {
         name: string;
         phone: string;
-        email: string;
-        address: string;
+        email?: string;
+        address?: string;
         identity?: {
             type: string;
             number: string;

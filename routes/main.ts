@@ -17,16 +17,16 @@ const requestBodySchema = z.object({
     customer: z.object({
         name: z.string(),
         phone: z.string(),
-        email: z.string().email(),
-        address: z.string(),
+        email: z.string().email().optional(),
+        address: z.string().optional(),
         identity: z.object({
             type: z.enum(["nin", "bvn"]),
             number: z.string().length(11),
-        }),
+        }).optional(),
     }),
-    loan_amount: z.number().min(1000),
-    monthly_income: z.number(),
-    redirect_url: z.string(),
+    loan_amount: z.number().min(1000).optional(),
+    monthly_income: z.number().optional(),
+    redirect_url: z.string().optional(),
 });
 
 router.post("/verify", async (req: Request, res: Response) => {
@@ -54,8 +54,8 @@ router.post("/verify", async (req: Request, res: Response) => {
             insertVerification({
                 id: data.data.reference,
                 full_name: customer.name,
-                id_type: customer.identity.type,
-                id_value: customer.identity.number,
+                id_type: customer.identity?.type,
+                id_value: customer.identity?.number,
                 email: customer.email,
                 loan_amount,
                 status: "pending",

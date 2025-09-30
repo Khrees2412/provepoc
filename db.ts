@@ -24,10 +24,10 @@ db.exec(`
 export const insertVerification = (verification: {
     id: string;
     full_name: string;
-    id_type: string;
-    id_value: string;
-    email: string;
-    loan_amount: number;
+    id_type?: string;
+    id_value?: string;
+    email?: string;
+    loan_amount?: number;
     status: string;
     mono_reference: string;
     kyc_level: string;
@@ -48,10 +48,10 @@ export const insertVerification = (verification: {
         const result = stmt.run(
             verification.id,
             verification.full_name,
-            verification.id_type,
-            verification.id_value,
-            verification.email,
-            verification.loan_amount,
+            verification.id_type ?? null,
+            verification.id_value ?? null,
+            verification.email ?? null,
+            verification.loan_amount ?? null,
             verification.status,
             verification.mono_reference,
             verification.kyc_level,
